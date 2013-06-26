@@ -1,0 +1,50 @@
+#!/usr/bin/python
+
+import screenlets
+import cairo
+import datetime
+
+class TimeTrackerScreenlet(screenlets.Screenlet):
+	__name__ = 'TimeTrackerScreenlet'
+	__version__ = '0.1'
+	__author__ = 'John Doe'
+	__desc__ = 'A basic time tracker screenlet.'
+	
+	theme_dir = ''
+	image = 'start.png'
+
+	def __init__(self, **keyword_args):
+		screenlets.Screenlet.__init__(self, width=250, height=50, **keyword_args)
+		self.add_default_menuitems()
+		self.y = 25
+		self.theme_name = 'default'
+		self.on = False
+		self.started = None
+
+	def on_draw(self, ctx):
+		self.draw_scaled_image(ctx, 0, 0, self.theme_dir + '/' + 
+		self.image, self.width, self.height)
+		
+	def on_mouse_down(self, event):
+		if self.on:
+			self.started = datetime.datetime.now()
+			self.image = 'stop.png'
+			self.on = False
+		else:
+			if self.started:
+				length = datetime.datetime.now() - self.started
+				screenlets.show_message(None, '%s seconds' % 
+				length.seconds, 'Time')
+				self.started = None
+			self.image = 'start.png'
+			self.on = True
+
+	def on_draw_shape(self, ctx):
+		self.on_draw(ctx)
+		ctx.rectangle(0, 0, self.width, self.height)
+		ctx.fill()
+	
+
+if __name__ == "__main__":
+	import screenlets.session
+	screenlets.session.create_session(TimeTrackerScreenlet)

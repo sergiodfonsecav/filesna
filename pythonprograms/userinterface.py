@@ -1,0 +1,45 @@
+#!/usr/bin/python
+
+#from Tkinter import *
+
+#try:
+#    import wx
+#except ImportError:
+#    raise ImportError,"The wxPython module is required to run this #program."
+#
+#root = Tk()
+#
+#root.title("ejemplo")
+#root.geometry("200x100")
+#
+#root.mainloop()
+#### !/usr/bin/env python
+#NEED PYTHON > 2.7
+#APT-GET INSTALL SCREENLETS
+
+import screenlets
+
+class HelloWorldScreenlet(screenlets.Screenlet):
+    __name__ = 'FUNCIONAAAA'
+    __version__ = '0.001'
+    __author__ = 'DENNYEL'
+    __desc__ = 'N/A'
+    
+    def __init__(self, **kwargs):
+        # Customize the width and height.
+        screenlets.Screenlet.__init__(self, width=180, height=50, **kwargs)
+    
+    def on_draw(self, ctx):
+        # Change the color to white and fill the screenlet.
+        ctx.set_source_rgb(255, 255, 255)
+        self.draw_rectangle(ctx, 0, 0, self.width, self.height)
+
+        # Change the color to black and write the message.
+        ctx.set_source_rgb(0, 0, 0)
+        text = 'fUNCIONA!!!'
+        self.draw_text(ctx, text, 10, 10, "Sans 9" , 20, self.width)
+
+
+if __name__ == "__main__":
+    import screenlets.session
+    screenlets.session.create_session(HelloWorldScreenlet)
